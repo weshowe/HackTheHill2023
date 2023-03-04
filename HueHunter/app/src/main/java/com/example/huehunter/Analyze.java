@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,6 +29,17 @@ public class Analyze extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
+
+        ttsr=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+         @Override
+         public void onInit(int status) {
+            if(status != TextToSpeech.ERROR) {
+               ttsr.setLanguage(Locale.US);
+            }
+         }
+        });
+
+        ttsr.speak("This is a test to see if the Android TTS works", TextToSpeech.QUEUE_FLUSH, null);
 
         view = (ImageView) this.findViewById(R.id.imageView);
 
