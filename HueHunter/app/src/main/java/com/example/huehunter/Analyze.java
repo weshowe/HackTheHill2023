@@ -163,33 +163,14 @@ public class Analyze extends AppCompatActivity {
 
                         }
 
-                        int[] white = {0,0,0};
-                        int[] black = {255,255,255};
-                        int[] olive = {128,128,0};
-                        int[] silver = {192,192,192};
-                        int[] lsalmon = {255,160,122};
-                        int[] red = {255,0,0};
-                        int[] blue = {0,0,255};
-                        int[] green = {0,255,0};
-                        Map<String, int[]> ColourMap  = new HashMap<String, int[]>() {{
-                            put("Black", new int[]);
-                            put("White", white);
-                            put("Olive", olive);
-                            put("Silver", silver);
-                            put("Light Salmon", lsalmon);
-                            put("Red", red);
-                            put("Green", green);
-                            put("Blue", blue);
-                        }};
-
-                        double[] colourDistances = new double[ColourMap.size()];
+                        double[] colourDistances = new double[MainActivity.colours.size()];
                         //int[][] colourVals = (int[][])ColourMap.keySet().toArray();
 
                         double minDist = Double.MAX_VALUE;
                         String cName = "INVALID";
                         int counter = 0;
 
-                        for (Map.Entry<String, int[]> entry : ColourMap.entrySet()) {
+                        for (Map.Entry<String, int[]> entry : MainActivity.colours.entrySet()) {
                             String key = entry.getKey();
                             int[] value = entry.getValue();
 
