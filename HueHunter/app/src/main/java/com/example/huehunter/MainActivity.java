@@ -18,6 +18,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
     static boolean isItGallery;
+
 //    ImageView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

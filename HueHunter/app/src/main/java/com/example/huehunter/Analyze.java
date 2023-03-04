@@ -1,13 +1,10 @@
 package com.example.huehunter;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-<<<<<<< Updated upstream
 import androidx.core.content.FileProvider;
-
-=======
->>>>>>> Stashed changes
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,8 +16,8 @@ import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.Locale;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,30 +30,43 @@ public class Analyze extends AppCompatActivity {
     ImageView view;
     Uri outPutfileUri;
     String mCurrentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
 
-
         view = (ImageView) this.findViewById(R.id.imageView);
 
-<<<<<<< Updated upstream
-        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "MyPhoto.jpg");
-        outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
-        startActivityForResult(intent, 1);
-=======
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, 100);
+
+            File file = new File(Environment.getExternalStorageDirectory(),"MyPhoto.jpg");
+            outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
+            startActivityForResult(intent, 1);
+
+        } else {
+            // Get image URI
+            Intent intent = getIntent();
+            Uri uriFromGallery = Uri.parse(intent.getStringExtra("Image"));
+
+            // Load the image
+            try {
+                final InputStream imageStream = getContentResolver().openInputStream(uriFromGallery);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                view.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                Toast.makeText(Analyze.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+            }
+
+
         }
 
->>>>>>> Stashed changes
     }
+
     Bitmap bitmap = null;
 
     private File createImageFile()  {
@@ -80,6 +90,7 @@ public class Analyze extends AppCompatActivity {
             return null;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -103,7 +114,6 @@ public class Analyze extends AppCompatActivity {
 
         }
     }}
-
 
 
     ///
