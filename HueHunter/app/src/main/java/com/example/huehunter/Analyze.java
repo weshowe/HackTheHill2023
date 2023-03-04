@@ -190,19 +190,16 @@ public class Analyze extends AppCompatActivity {
             }
         });
 
-        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int i) {
-                if (i == TextToSpeech.SUCCESS) {
-                    int lang = tts.setLanguage(Locale.getDefault()); // Get the phone's locale
-                    // Check if the language is supported
-                    if (lang == TextToSpeech.LANG_MISSING_DATA) {
-                        Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();
+        tts = new TextToSpeech(getApplicationContext(), i -> {
+            if (i == TextToSpeech.SUCCESS) {
+                int lang = tts.setLanguage(Locale.getDefault()); // Get the phone's locale
+                // Check if the language is supported
+                if (lang == TextToSpeech.LANG_MISSING_DATA) {
+                    Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();
                 }
-            };
+            } else {
+                Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         galleryButton.setOnClickListener(view -> {
