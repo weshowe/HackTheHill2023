@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
+import android.widget.Magnifier;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -30,6 +33,8 @@ public class Analyze extends AppCompatActivity {
     ImageView view;
     Uri outPutfileUri;
     String mCurrentPhotoPath;
+
+    Magnifier magnifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,38 @@ public class Analyze extends AppCompatActivity {
 
         }
 
+
+        View myView = new View(this.getApplicationContext());
+        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStorageDirectory(),
+                "MyPhoto.jpg");
+        outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
+        startActivityForResult(intent, 1);
+
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Fall through.
+                    case MotionEvent.ACTION_MOVE: {
+                        final int[] viewPosition = new int[2];
+                        v.getLocationOnScreen(viewPosition);
+                        magnifier.show(event.getRawX() - viewPosition[0],
+                                event.getRawY() - viewPosition[1]);
+                        break;
+                    }
+                    case MotionEvent.ACTION_CANCEL:
+                        // Fall through.
+                    case MotionEvent.ACTION_UP: {
+                        magnifier.dismiss();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     Bitmap bitmap = null;
@@ -112,7 +149,9 @@ public class Analyze extends AppCompatActivity {
 
 
         }
-    }}
+    }
+
+}
 
     ///
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
