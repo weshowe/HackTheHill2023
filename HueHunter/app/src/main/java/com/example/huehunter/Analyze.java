@@ -142,7 +142,7 @@ public class Analyze extends AppCompatActivity {
                         System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
 
                         try {
-                            bitmap.getPixels(zoom_pixels, 0, 1, pos.x, pos.y, 1, 1);
+                            bitmap.getPixels(zoom_pixels, 0, 1, (int)X, (int)Y, 1, 1);
                         } catch (IllegalArgumentException e) {
                             System.out.println("Invalid Position");
                             break;
