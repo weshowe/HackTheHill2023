@@ -26,8 +26,8 @@ import android.widget.Magnifier;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.core.type.TypeReference;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 
@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.lang.Math;
 
 public class Analyze extends AppCompatActivity {
     ImageView view;
@@ -76,7 +77,7 @@ public class Analyze extends AppCompatActivity {
         galleryButton = (Button) findViewById(R.id.gallery_button);
         cameraButton = (Button) findViewById(R.id.camera_button);
 
-        getColors();
+        //getColors();
 
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -145,13 +146,15 @@ public class Analyze extends AppCompatActivity {
 
                         //System.out.println(Arrays.toString(zoom_pixels));
 
-                        int[] pixel_sum = {0,0,0,0};
+                        //int[] pixel_sum = {0,0,0,0};
+                        int[] pixel_sum = {0,0,0};
 
+                        // ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
                         for(int i=0; i<zoom_pixels.length; i++){
-                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
-                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 16) & 0xff);
-                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i] >>  8) & 0xff);
-                            pixel_sum[3] = pixel_sum[3] + ((zoom_pixels[i]      ) & 0xff);
+                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
+                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >>  8) & 0xff);
+                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]      ) & 0xff);
                         }
 
                         for(int i=0; i<pixel_sum.length; i++){
@@ -159,6 +162,47 @@ public class Analyze extends AppCompatActivity {
 
                         }
 
+                        int[] white = {0,0,0};
+                        int[] black = {255,255,255};
+                        int[] olive = {128,128,0};
+                        int[] silver = {192,192,192};
+                        int[] lsalmon = {255,160,122};
+                        int[] red = {255,0,0};
+                        int[] blue = {0,0,255};
+                        int[] green = {0,255,0};
+                        Map<String, int[]> ColourMap  = new HashMap<String, int[]>() {{
+                            put("Black", black);
+                            put("White", white);
+                            put("Olive", olive);
+                            put("Silver", silver);
+                            put("Light Salmon", lsalmon);
+                            put("Red", red);
+                            put("Green", green);
+                            put("Blue", blue);
+                        }};
+
+                        double[] colourDistances = new double[ColourMap.size()];
+                        //int[][] colourVals = (int[][])ColourMap.keySet().toArray();
+
+                        double minDist = Double.MAX_VALUE;
+                        String cName = "INVALID";
+                        int counter = 0;
+
+                        for (Map.Entry<String, int[]> entry : ColourMap.entrySet()) {
+                            String key = entry.getKey();
+                            int[] value = entry.getValue();
+
+                            double curDist = cDist(pixel_sum, value);
+                            colourDistances[counter] = curDist;
+
+                            if(curDist < minDist){
+                                minDist = curDist;
+                                cName = key;
+                            }
+
+                            counter = counter + 1;
+
+                        }
 
                         //float mean_pixel = pixel_sum / zoom_pixels.length;
                         System.out.println(Arrays.toString(pixel_sum));
@@ -169,12 +213,13 @@ public class Analyze extends AppCompatActivity {
                         //int g = Color.green(pixel);
                         //int b = Color.blue(pixel);
 
-                        String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
-                        //Color newColor = new Color(r,g,b);
-                        Log.i("i",getColorName(finalColour,colorNames));
-                        colorTellingText.setText(getColorName(finalColour,colorNames));
-                        sayColour(getColorName(finalColour,colorNames));
                         //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
+                        //Color newColor = new Color(r,g,b);
+                        //Log.i("i",getColorName(finalColour,colorNames));
+                        //colorTellingText.setText(getColorName(finalColour,colorNames));
+                        //sayColour(getColorName(finalColour,colorNames));
+                        //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
+                        sayColour(cName);
 
                         //colorTellingText.setText(finalColour);
                         break;
@@ -209,7 +254,7 @@ public class Analyze extends AppCompatActivity {
             startActivityForResult(intent, 2);
         });
 
-
+/*
     private static String getColorName(String hexColorCode, Map<String, Object> colorMap) {
         String colorName = "unknown";
         if (hexColorCode.length() == 7 && hexColorCode.startsWith("#")) {
@@ -220,7 +265,7 @@ public class Analyze extends AppCompatActivity {
         }
         return colorName;
     }
-
+*/
     Bitmap bitmap = null;
         cameraButton.setOnClickListener(view -> {
             MainActivity.isItGallery = false;
@@ -294,6 +339,7 @@ public class Analyze extends AppCompatActivity {
         }
     }
 
+    /*
     public void getColors(){
         ObjectMapper mapper = new ObjectMapper();
 
@@ -309,6 +355,10 @@ public class Analyze extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+*/
+    public double cDist(int[] x, int[] y){
+        return Math.sqrt(Math.pow(y[2] - x[2],2) + Math.pow(y[1] - x[1],2) + Math.pow(y[0] - x[0],2));
     }
 }
 
