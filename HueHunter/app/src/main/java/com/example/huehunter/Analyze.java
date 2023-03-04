@@ -1,5 +1,6 @@
 package com.example.huehunter;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -46,7 +48,6 @@ public class Analyze extends AppCompatActivity {
 
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, 100);
 
             File file = new File(Environment.getExternalStorageDirectory(),"MyPhoto.jpg");
             outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
@@ -71,16 +72,10 @@ public class Analyze extends AppCompatActivity {
         }
 
 
-        View myView = new View(this.getApplicationContext());
-        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "MyPhoto.jpg");
-        outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
-        startActivityForResult(intent, 1);
 
 
         view.setOnTouchListener(new View.OnTouchListener() {
+            @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
