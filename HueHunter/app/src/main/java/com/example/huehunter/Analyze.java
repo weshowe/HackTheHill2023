@@ -1,13 +1,12 @@
 package com.example.huehunter;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.InputStream;
 import java.util.Locale;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +37,7 @@ public class Analyze extends AppCompatActivity {
     Uri outPutfileUri;
     String mCurrentPhotoPath;
     TextView circle;
+    TextView colorTellingText;
 
     Magnifier magnifier;
 
@@ -51,6 +50,8 @@ public class Analyze extends AppCompatActivity {
 
         view = (ImageView) this.findViewById(R.id.imageView);
         circle = (TextView)findViewById(R.id.invisibleCircle);
+        colorTellingText = findViewById(R.id.colorTellingText);
+
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -94,6 +95,20 @@ public class Analyze extends AppCompatActivity {
                                 event.getRawY() - viewPosition[1]);
                         circle.setX(event.getRawX() - viewPosition[0]+70);
                         circle.setY(event.getRawY() - viewPosition[1]+130);
+
+                        // Get location of the small circle
+                        float X = circle.getX();
+                        float Y = circle.getY();
+
+                        // Extract the rgb values
+                        int pixel = bitmap.getPixel((int)X, (int)Y);
+                        int r = Color.red(pixel);
+                        int g = Color.green(pixel);
+                        int b = Color.blue(pixel);
+
+                        String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
+
+                        colorTellingText.setText(finalColour);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
