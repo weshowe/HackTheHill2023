@@ -1,4 +1,6 @@
 package com.example.huehunter;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,11 +19,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
 import android.widget.Toast;
+
 import java.io.InputStream;
+import java.util.Locale;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,7 +77,6 @@ public class Analyze extends AppCompatActivity {
         View view2 = findViewById(R.id.imageView);
         magnifier = new Magnifier(view2);
         magnifier.setZoom(4);
-
         view.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("NewApi")
             @Override
