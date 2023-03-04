@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -39,10 +40,10 @@ public class Analyze extends AppCompatActivity {
     Uri outPutfileUri;
     String mCurrentPhotoPath;
     TextView circle;
-
     Magnifier magnifier;
 
     TextToSpeech tts;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -79,6 +80,7 @@ public class Analyze extends AppCompatActivity {
 
 
         View view2 = findViewById(R.id.imageView);
+
         magnifier = new Magnifier(view2);
         magnifier.setZoom(4);
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -92,10 +94,15 @@ public class Analyze extends AppCompatActivity {
                         circle.setVisibility(View.VISIBLE);
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
-                        magnifier.show(event.getRawX() - viewPosition[0],
-                                event.getRawY() - viewPosition[1]);
-                        circle.setX(event.getRawX() - viewPosition[0]+70);
-                        circle.setY(event.getRawY() - viewPosition[1]+130);
+                        float x = event.getRawX() - viewPosition[0];
+                        float y = event.getRawY() - viewPosition[1];
+                       magnifier.show(x, y);
+
+                        //Log.i("i", String.valueOf(magnifier.getWidth()));
+                        //Log.i("i", String.valueOf(magnifier.getHeight()));
+                        circle.setX(x+magnifier.getWidth()/4);
+                        circle.setY(y+magnifier.getHeight());
+
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
