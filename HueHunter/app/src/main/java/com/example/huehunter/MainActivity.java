@@ -3,19 +3,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 
 public class MainActivity extends AppCompatActivity {
+    static boolean isItGallery;
 //    ImageView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +33,37 @@ public class MainActivity extends AppCompatActivity {
             },100);
         }
     }
+
+    public void openGallery(View view) {
+        isItGallery=true;
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 3);
+    }
+
+    public void openAbout(View view) {}
+
+    public void openSettings(View view) {
+    }
+
     public void cameraClick(View view){
+        isItGallery=false;
         Intent intent = new Intent(this,Analyze.class);
         startActivity(intent);
-
     }
-//    public void cameraClick(View view) {
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            Intent intent = new Intent(MainActivity.this, Analyze.class);
+            intent.putExtra("Image", selectedImage.toString()); // Pass image to the other activity
+            // Send the user to the Analyze activity
+            startActivity(intent);
+        }
+    }
+
+    //    public void cameraClick(View view) {
 //
 //        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        startActivityForResult(intent,100);

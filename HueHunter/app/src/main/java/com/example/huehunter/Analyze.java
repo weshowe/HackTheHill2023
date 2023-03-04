@@ -1,9 +1,11 @@
 package com.example.huehunter;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+<<<<<<< Updated upstream
 import androidx.core.content.FileProvider;
 
+=======
+>>>>>>> Stashed changes
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,18 +35,27 @@ public class Analyze extends AppCompatActivity {
     String mCurrentPhotoPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
 
 
         view = (ImageView) this.findViewById(R.id.imageView);
 
+<<<<<<< Updated upstream
         Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File file = new File(Environment.getExternalStorageDirectory(),
                 "MyPhoto.jpg");
         outPutfileUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", createImageFile());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutfileUri);
         startActivityForResult(intent, 1);
+=======
+        if(MainActivity.isItGallery==false) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, 100);
+        }
+
+>>>>>>> Stashed changes
     }
     Bitmap bitmap = null;
 
