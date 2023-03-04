@@ -6,7 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -40,6 +40,9 @@ public class Analyze extends AppCompatActivity {
     TextView colorTellingText;
 
     Magnifier magnifier;
+
+    TextToSpeech tts;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -78,6 +81,7 @@ public class Analyze extends AppCompatActivity {
 
 
         View view2 = findViewById(R.id.imageView);
+
         magnifier = new Magnifier(view2);
         magnifier.setZoom(4);
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -121,6 +125,22 @@ public class Analyze extends AppCompatActivity {
                 return true;
             }
         });
+
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i == TextToSpeech.SUCCESS) {
+                    int lang = tts.setLanguage(Locale.getDefault()); // Get the phone's locale
+                    // Check if the language is supported
+                    if (lang == TextToSpeech.LANG_MISSING_DATA) {
+                        Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            };
+        });
+
     }
 
     Bitmap bitmap = null;
@@ -151,10 +171,19 @@ public class Analyze extends AppCompatActivity {
         }
     }
 
+    private void sayColour(String colourName) {
+        int status = tts.speak(colourName, TextToSpeech.QUEUE_FLUSH, null, "ID");
+        if (status == TextToSpeech.ERROR) {
+            Toast.makeText(this, "Can't use TTS engine!", Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
+
+            sayColour("blue");
 
             String uri = outPutfileUri.toString();
             Log.e("uri-:", uri);
@@ -170,8 +199,6 @@ public class Analyze extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
