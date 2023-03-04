@@ -196,6 +196,7 @@ public class Analyze extends AppCompatActivity {
                 // Check if the language is supported
                 if (lang == TextToSpeech.LANG_MISSING_DATA) {
                     Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();
+                    tts.setLanguage(Locale.US); // Set to en_US as a fallback
                 }
             } else {
                 Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();
