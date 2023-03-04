@@ -3,6 +3,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +40,7 @@ public class Analyze extends AppCompatActivity {
 
     Magnifier magnifier;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -71,10 +74,10 @@ public class Analyze extends AppCompatActivity {
         }
 
 
-
-
+        View view2 = findViewById(R.id.imageView);
+        magnifier = new Magnifier(view2);
         view.setOnTouchListener(new View.OnTouchListener() {
-            @RequiresApi(api = Build.VERSION_CODES.P)
+            @SuppressLint("NewApi")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
