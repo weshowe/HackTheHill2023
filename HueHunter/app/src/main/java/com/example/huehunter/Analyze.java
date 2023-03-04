@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,7 +24,13 @@ import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.InputStream;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Locale;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class Analyze extends AppCompatActivity {
     ImageView view;
@@ -40,7 +49,7 @@ public class Analyze extends AppCompatActivity {
     TextView colorTellingText;
 
     Magnifier magnifier;
-
+    Map<String, Object> colorNames;
     TextToSpeech tts;
 
 
@@ -54,6 +63,8 @@ public class Analyze extends AppCompatActivity {
         view = (ImageView) this.findViewById(R.id.imageView);
         circle = (TextView)findViewById(R.id.invisibleCircle);
         colorTellingText = findViewById(R.id.colorTellingText);
+
+        getColors();
 
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -95,8 +106,7 @@ public class Analyze extends AppCompatActivity {
                         circle.setVisibility(View.VISIBLE);
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
-                        magnifier.show(event.getRawX() - viewPosition[0],
-                                event.getRawY() - viewPosition[1]);
+                        magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
                         circle.setX(event.getRawX() - viewPosition[0]+70);
                         circle.setY(event.getRawY() - viewPosition[1]+130);
 
@@ -111,8 +121,10 @@ public class Analyze extends AppCompatActivity {
                         int b = Color.blue(pixel);
 
                         String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
-
-                        colorTellingText.setText(finalColour);
+                        //Color newColor = new Color(r,g,b);
+                        Log.i("i",getColorName(finalColour,colorNames));
+                        colorTellingText.setText(getColorName(finalColour,colorNames));
+                        sayColour(getColorName(finalColour,colorNames));
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
@@ -141,6 +153,17 @@ public class Analyze extends AppCompatActivity {
             };
         });
 
+    }
+
+    private static String getColorName(String hexColorCode, Map<String, Object> colorMap) {
+        String colorName = "unknown";
+        if (hexColorCode.length() == 7 && hexColorCode.startsWith("#")) {
+            String hex = hexColorCode.substring(1).toLowerCase();
+            if (colorMap.containsKey(hex)) {
+                colorName = colorMap.get(hex).toString();
+            }
+        }
+        return colorName;
     }
 
     Bitmap bitmap = null;
@@ -202,37 +225,21 @@ public class Analyze extends AppCompatActivity {
         }
     }
 
+    public void getColors(){
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        try {
+            // create instance of the File class
+            File fileObj = new File("https://github.com/cheprasov/json-colors/blob/master/colors.json");
+            colorNames = mapper.readValue(
+                    fileObj, new TypeReference<Map<String, Object>>() {
+                    });
+            Log.i("i",colorNames.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
-    ///
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode==100){
-//            Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-//            onCaptureImageResult(data);
-//        }
-//    }
-//    private void onCaptureImageResult(Intent data) {
-//        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//
-//        File destination = new File(Environment.getExternalStorageDirectory(),
-//                System.currentTimeMillis() + ".jpg");
-//
-//        FileOutputStream fo;
-//        try {
-//            destination.createNewFile();
-//            fo = new FileOutputStream(destination);
-//            fo.write(bytes.toByteArray());
-//            fo.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        view.setImageBitmap(thumbnail);
-//    }
-//}

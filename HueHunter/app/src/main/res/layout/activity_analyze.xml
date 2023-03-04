@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/colorTellingText"
-        android:layout_width="200dp"
-        android:layout_height="27dp"
+        android:layout_width="111dp"
+        android:layout_height="21dp"
         android:layout_marginStart="183dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="183dp"
         android:hint="Colour"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,11 +27,11 @@
         android:layout_marginStart="62dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="62dp"
+        app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintHorizontal_bias="0.403"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colorTellingText"
-        app:layout_constraintDimensionRatio="h,16:9"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <Button
@@ -85,7 +85,7 @@
 
     <TextView
         android:id="@+id/invisibleCircle"
-        android:layout_width="11dp"
+        android:layout_width="9dp"
         android:layout_height="9dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/circle"
