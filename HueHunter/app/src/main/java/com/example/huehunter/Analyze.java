@@ -136,12 +136,13 @@ public class Analyze extends AppCompatActivity {
                         int width_offset = magnifier.getSourceWidth();
                         Point pos = magnifier.getSourcePosition();
 
-                        int[] zoom_pixels = new int[height_offset * width_offset];
+                        //int[] zoom_pixels = new int[height_offset * width_offset];
+                        int[] zoom_pixels = new int[1];
 
                         System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
 
                         try {
-                            bitmap.getPixels(zoom_pixels, 0, width_offset, pos.x, pos.y, width_offset, height_offset);
+                            bitmap.getPixels(zoom_pixels, 0, 1, pos.x, pos.y, 1, 1);
                         } catch (IllegalArgumentException e) {
                             System.out.println("Invalid Position");
                             break;
