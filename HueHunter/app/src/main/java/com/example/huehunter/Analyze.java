@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
+import android.speech.tts.TextToSpeech;
+import java.util.Locale;
 
 public class Analyze extends AppCompatActivity {
     ImageView view;
@@ -16,6 +18,17 @@ public class Analyze extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
+
+        ttsr=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+         @Override
+         public void onInit(int status) {
+            if(status != TextToSpeech.ERROR) {
+               ttsr.setLanguage(Locale.US);
+            }
+         }
+        });
+
+        ttsr.speak("This is a test to see if the Android TTS works", TextToSpeech.QUEUE_FLUSH, null);
 
         view = (ImageView) this.findViewById(R.id.imageView);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
