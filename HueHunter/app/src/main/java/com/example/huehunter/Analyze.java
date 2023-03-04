@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -37,6 +38,7 @@ public class Analyze extends AppCompatActivity {
     ImageView view;
     Uri outPutfileUri;
     String mCurrentPhotoPath;
+    TextView circle;
 
     Magnifier magnifier;
 
@@ -48,7 +50,7 @@ public class Analyze extends AppCompatActivity {
         setContentView(R.layout.activity_analyze);
 
         view = (ImageView) this.findViewById(R.id.imageView);
-
+        circle = (TextView)findViewById(R.id.invisibleCircle);
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -85,6 +87,7 @@ public class Analyze extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         // Fall through.
                     case MotionEvent.ACTION_MOVE: {
+                        circle.setVisibility(View.VISIBLE);
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
                         magnifier.show(event.getRawX() - viewPosition[0],
@@ -95,6 +98,7 @@ public class Analyze extends AppCompatActivity {
                         // Fall through.
                     case MotionEvent.ACTION_UP: {
                         magnifier.dismiss();
+                        circle.setVisibility(View.INVISIBLE);
                     }
                 }
                 return true;
