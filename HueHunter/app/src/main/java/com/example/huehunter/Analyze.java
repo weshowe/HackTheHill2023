@@ -44,6 +44,8 @@ public class Analyze extends AppCompatActivity {
 
     TextToSpeech tts;
 
+    Bitmap bitmap;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -72,8 +74,8 @@ public class Analyze extends AppCompatActivity {
             // Load the image
             try {
                 final InputStream imageStream = getContentResolver().openInputStream(uriFromGallery);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                view.setImageBitmap(selectedImage);
+                bitmap = BitmapFactory.decodeStream(imageStream);
+                view.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Toast.makeText(Analyze.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
             }
@@ -143,8 +145,6 @@ public class Analyze extends AppCompatActivity {
         });
 
     }
-
-    Bitmap bitmap = null;
 
     private File createImageFile()  {
         // Create an image file name
