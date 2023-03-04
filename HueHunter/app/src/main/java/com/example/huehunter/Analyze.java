@@ -111,6 +111,9 @@ public class Analyze extends AppCompatActivity {
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM), "Camera");
+            if (!storageDir.exists()) {
+                storageDir.mkdirs();
+            }
             File image = File.createTempFile(
                     imageFileName,  /* prefix */
                     ".jpg",         /* suffix */
@@ -122,6 +125,7 @@ public class Analyze extends AppCompatActivity {
             return image;
         }
         catch(Exception e){
+            Log.e("Error creating image", Log.getStackTraceString(e));
             return null;
         }
     }
