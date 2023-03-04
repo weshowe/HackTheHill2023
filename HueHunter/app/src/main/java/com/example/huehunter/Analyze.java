@@ -92,6 +92,8 @@ public class Analyze extends AppCompatActivity {
                         v.getLocationOnScreen(viewPosition);
                         magnifier.show(event.getRawX() - viewPosition[0],
                                 event.getRawY() - viewPosition[1]);
+                        circle.setX(event.getRawX() - viewPosition[0]+70);
+                        circle.setY(event.getRawY() - viewPosition[1]+130);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
