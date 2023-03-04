@@ -68,7 +68,6 @@ public class Analyze extends AppCompatActivity {
                 Toast.makeText(Analyze.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
             }
 
-
         }
 
 
@@ -148,7 +147,6 @@ public class Analyze extends AppCompatActivity {
     }
 
 }
-
 
     ///
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
