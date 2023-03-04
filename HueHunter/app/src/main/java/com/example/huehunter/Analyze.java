@@ -3,6 +3,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
@@ -47,6 +49,9 @@ public class Analyze extends AppCompatActivity {
 
     Bitmap bitmap;
 
+    Button galleryButton;
+    Button cameraButton;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -58,6 +63,8 @@ public class Analyze extends AppCompatActivity {
         view = (ImageView) this.findViewById(R.id.imageView);
         circle = (TextView)findViewById(R.id.invisibleCircle);
         colorTellingText = findViewById(R.id.colorTellingText);
+        galleryButton = (Button) findViewById(R.id.gallery_button);
+        cameraButton = (Button) findViewById(R.id.camera_button);
 
         if(MainActivity.isItGallery==false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -82,7 +89,6 @@ public class Analyze extends AppCompatActivity {
             }
 
         }
-
 
         View view2 = findViewById(R.id.imageView);
 
@@ -183,6 +189,18 @@ public class Analyze extends AppCompatActivity {
             };
         });
 
+        galleryButton.setOnClickListener(view -> {
+            MainActivity.isItGallery = true;
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, 2);
+        });
+
+        cameraButton.setOnClickListener(view -> {
+            MainActivity.isItGallery = false;
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        });
     }
 
     private File createImageFile()  {
@@ -239,6 +257,13 @@ public class Analyze extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            Intent intent = getIntent();
+            intent.putExtra("Image", selectedImage.toString());
+            finish();
+            startActivity(intent);
         }
     }
 
