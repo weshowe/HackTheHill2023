@@ -24,6 +24,7 @@ import android.widget.Magnifier;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Locale;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -107,15 +108,53 @@ public class Analyze extends AppCompatActivity {
                         float X = circle.getX();
                         float Y = circle.getY();
 
+                        int orig_height = bitmap.getHeight();
+                        int orig_width = bitmap.getWidth();
+
+                        int height_offset = magnifier.getSourceHeight();
+                        int width_offset = magnifier.getSourceWidth();
+                        Point pos = magnifier.getSourcePosition();
+
+                        int[] zoom_pixels = new int[height_offset*width_offset];
+
+                        System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
+
+                        try {
+                            bitmap.getPixels(zoom_pixels, 0, width_offset, pos.x, pos.y, width_offset, height_offset);
+                        }catch(IllegalArgumentException e){
+                            System.out.println("Invalid Position");
+                            break;
+                        }
+
+                        //System.out.println(Arrays.toString(zoom_pixels));
+
+                        int[] pixel_sum = {0,0,0,0};
+
+                        for(int i=0; i<zoom_pixels.length; i++){
+                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 16) & 0xff);
+                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i] >>  8) & 0xff);
+                            pixel_sum[3] = pixel_sum[3] + ((zoom_pixels[i]      ) & 0xff);
+                        }
+
+                        for(int i=0; i<pixel_sum.length; i++){
+                            pixel_sum[i] = pixel_sum[i] / zoom_pixels.length;
+
+                        }
+
+
+                        //float mean_pixel = pixel_sum / zoom_pixels.length;
+                        System.out.println(Arrays.toString(pixel_sum));
+
                         // Extract the rgb values
-                        int pixel = bitmap.getPixel((int)X, (int)Y);
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
+                        //int pixel = bitmap.getPixel((int)X, (int)Y);
+                        //int r = Color.red(pixel);
+                        //int g = Color.green(pixel);
+                        //int b = Color.blue(pixel);
 
-                        String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
+                        //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
 
-                        colorTellingText.setText(finalColour);
+                        //colorTellingText.setText(finalColour);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
