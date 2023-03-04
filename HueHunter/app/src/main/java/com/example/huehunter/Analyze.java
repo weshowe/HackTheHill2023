@@ -3,11 +3,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
 import android.widget.Magnifier;
@@ -29,8 +30,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
+
 import java.net.URL;
 import java.util.HashMap;
+
+import java.util.Arrays;
+
 import java.util.Locale;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,6 +57,11 @@ public class Analyze extends AppCompatActivity {
     Map<String, Object> colorNames;
     TextToSpeech tts;
 
+    Bitmap bitmap;
+
+    Button galleryButton;
+    Button cameraButton;
+
 
     @SuppressLint("NewApi")
     @Override
@@ -63,6 +73,8 @@ public class Analyze extends AppCompatActivity {
         view = (ImageView) this.findViewById(R.id.imageView);
         circle = (TextView)findViewById(R.id.invisibleCircle);
         colorTellingText = findViewById(R.id.colorTellingText);
+        galleryButton = (Button) findViewById(R.id.gallery_button);
+        cameraButton = (Button) findViewById(R.id.camera_button);
 
         getColors();
 
@@ -82,14 +94,13 @@ public class Analyze extends AppCompatActivity {
             // Load the image
             try {
                 final InputStream imageStream = getContentResolver().openInputStream(uriFromGallery);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                view.setImageBitmap(selectedImage);
+                bitmap = BitmapFactory.decodeStream(imageStream);
+                view.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Toast.makeText(Analyze.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
             }
 
         }
-
 
         View view2 = findViewById(R.id.imageView);
 
@@ -114,17 +125,58 @@ public class Analyze extends AppCompatActivity {
                         float X = circle.getX();
                         float Y = circle.getY();
 
+                        int orig_height = bitmap.getHeight();
+                        int orig_width = bitmap.getWidth();
+
+                        int height_offset = magnifier.getSourceHeight();
+                        int width_offset = magnifier.getSourceWidth();
+                        Point pos = magnifier.getSourcePosition();
+
+                        int[] zoom_pixels = new int[height_offset*width_offset];
+
+                        System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
+
+                        try {
+                            bitmap.getPixels(zoom_pixels, 0, width_offset, pos.x, pos.y, width_offset, height_offset);
+                        }catch(IllegalArgumentException e){
+                            System.out.println("Invalid Position");
+                            break;
+                        }
+
+                        //System.out.println(Arrays.toString(zoom_pixels));
+
+                        int[] pixel_sum = {0,0,0,0};
+
+                        for(int i=0; i<zoom_pixels.length; i++){
+                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 16) & 0xff);
+                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i] >>  8) & 0xff);
+                            pixel_sum[3] = pixel_sum[3] + ((zoom_pixels[i]      ) & 0xff);
+                        }
+
+                        for(int i=0; i<pixel_sum.length; i++){
+                            pixel_sum[i] = pixel_sum[i] / zoom_pixels.length;
+
+                        }
+
+
+                        //float mean_pixel = pixel_sum / zoom_pixels.length;
+                        System.out.println(Arrays.toString(pixel_sum));
+
                         // Extract the rgb values
-                        int pixel = bitmap.getPixel((int)X, (int)Y);
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
+                        //int pixel = bitmap.getPixel((int)X, (int)Y);
+                        //int r = Color.red(pixel);
+                        //int g = Color.green(pixel);
+                        //int b = Color.blue(pixel);
 
                         String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
                         //Color newColor = new Color(r,g,b);
                         Log.i("i",getColorName(finalColour,colorNames));
                         colorTellingText.setText(getColorName(finalColour,colorNames));
                         sayColour(getColorName(finalColour,colorNames));
+                        //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
+
+                        //colorTellingText.setText(finalColour);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
@@ -153,7 +205,12 @@ public class Analyze extends AppCompatActivity {
             };
         });
 
-    }
+        galleryButton.setOnClickListener(view -> {
+            MainActivity.isItGallery = true;
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, 2);
+        });
+
 
     private static String getColorName(String hexColorCode, Map<String, Object> colorMap) {
         String colorName = "unknown";
@@ -167,6 +224,13 @@ public class Analyze extends AppCompatActivity {
     }
 
     Bitmap bitmap = null;
+        cameraButton.setOnClickListener(view -> {
+            MainActivity.isItGallery = false;
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        });
+    }
 
     private File createImageFile()  {
         // Create an image file name
@@ -222,6 +286,13 @@ public class Analyze extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        else if (requestCode == 2 && resultCode == RESULT_OK && data != null) {
+            Uri selectedImage = data.getData();
+            Intent intent = getIntent();
+            intent.putExtra("Image", selectedImage.toString());
+            finish();
+            startActivity(intent);
         }
     }
 
