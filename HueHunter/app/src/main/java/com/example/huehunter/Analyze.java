@@ -220,6 +220,7 @@ public class Analyze extends AppCompatActivity {
                         //sayColour(getColorName(finalColour,colorNames));
                         //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
                         sayColour(cName);
+                        colorTellingText.setText(cName);
 
                         //colorTellingText.setText(finalColour);
                         break;
