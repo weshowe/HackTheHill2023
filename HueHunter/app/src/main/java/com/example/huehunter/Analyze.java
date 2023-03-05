@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -65,7 +66,9 @@ public class Analyze extends AppCompatActivity {
         colorTellingText = findViewById(R.id.colorTellingText);
         layout = (ConstraintLayout) findViewById(R.id.constraint_layout);
 
-
+        if(view.getWidth()>=view.getHeight()){
+            roateImage();
+        }
         if (MainActivity.isItGallery == false) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -481,6 +484,15 @@ public class Analyze extends AppCompatActivity {
     public void goHome(View view){
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
+    }
+
+    private void roateImage() {
+//        Matrix matrix = new Matrix();
+//        view.setScaleType(ImageView.ScaleType.MATRIX); //required
+//        matrix.postRotate((float) 90, view.getDrawable().getBounds().width()/2,    view.getDrawable().getBounds().height()/2);
+//        view.setImageMatrix(matrix);
+        view.setRotation((float) 90.0);
+
     }
 }
 
