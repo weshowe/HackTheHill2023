@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Almond", new int[]{239, 222, 205});
         colours.put("Amaranth", new int[]{229, 43, 80});
         colours.put("Amber", new int[]{255, 191, 0});
-        colours.put("Amber", new int[]{255, 126, 0});
         colours.put("American Rose", new int[]{255, 3, 62});
         colours.put("Amethyst", new int[]{153, 102, 204});
         colours.put("Android Green", new int[]{164, 198, 57});
@@ -151,13 +150,11 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Bleu De France", new int[]{49, 140, 231});
         colours.put("Blizzard Blue", new int[]{172, 229, 238});
         colours.put("Blond", new int[]{250, 240, 190});
-        colours.put("Blue", new int[]{0, 0, 255});
         colours.put("Blue Bell", new int[]{162, 162, 208});
         colours.put("Blue (Crayola)", new int[]{31, 117, 254});
         colours.put("Blue Gray", new int[]{102, 153, 204});
         colours.put("Blue-Green", new int[]{13, 152, 186});
         colours.put("Blue", new int[]{0, 147, 175});
-        colours.put("Blue", new int[]{0, 135, 189});
         colours.put("Blue Pigment", new int[]{51, 51, 153});
         colours.put("Blue Ryb", new int[]{2, 71, 254});
         colours.put("Blue Sapphire", new int[]{18, 97, 128});
@@ -219,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Cardinal", new int[]{196, 30, 58});
         colours.put("Caribbean Green", new int[]{0, 204, 153});
         colours.put("Carmine", new int[]{150, 0, 24});
-        colours.put("Carmine", new int[]{215, 0, 64});
         colours.put("Carmine Pink", new int[]{235, 76, 66});
         colours.put("Carmine Red", new int[]{255, 0, 56});
         colours.put("Carnation Pink", new int[]{255, 166, 201});
@@ -521,7 +517,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Light Goldenrod Yellow", new int[]{250, 250, 210});
         colours.put("Light Gray", new int[]{211, 211, 211});
         colours.put("Light Green", new int[]{144, 238, 144});
-        colours.put("Light Khaki", new int[]{240, 230, 140});
         colours.put("Light Pastel Purple", new int[]{177, 156, 217});
         colours.put("Light Pink", new int[]{255, 182, 193});
         colours.put("Light Red Ochre", new int[]{233, 116, 81});
@@ -627,7 +622,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Old Rose", new int[]{192, 128, 129});
         colours.put("Olive", new int[]{128, 128, 0});
         colours.put("Olive Drab", new int[]{60, 52, 31});
-        colours.put("Olive Drab", new int[]{107, 142, 35});
         colours.put("Olivine", new int[]{154, 185, 115});
         colours.put("Onyx", new int[]{53, 56, 57});
         colours.put("Opera Mauve", new int[]{183, 132, 167});
@@ -729,7 +723,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Purple Munsell", new int[]{159, 0, 197});
         colours.put("Purple Pizzazz", new int[]{254, 78, 218});
         colours.put("Purple Taupe", new int[]{80, 64, 77});
-        colours.put("Purple", new int[]{160, 32, 240});
         colours.put("Quartz", new int[]{81, 72, 79});
         colours.put("Rackley", new int[]{93, 138, 168});
         colours.put("Radical Red", new int[]{255, 53, 94});
@@ -912,8 +905,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Veronica", new int[]{160, 32, 240});
         colours.put("Violet", new int[]{143, 0, 255});
         colours.put("Violet-Blue", new int[]{50, 74, 178});
-        colours.put("Violet", new int[]{127, 0, 255});
-        colours.put("Violet", new int[]{238, 130, 238});
         colours.put("Viridian", new int[]{64, 130, 109});
         colours.put("Vivid Auburn", new int[]{146, 39, 36});
         colours.put("Vivid Burgundy", new int[]{159, 29, 53});
@@ -938,7 +929,6 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Yellow", new int[]{255, 255, 0});
         colours.put("Yellow-Green", new int[]{154, 205, 50});
         colours.put("Yellow Munsell", new int[]{239, 204, 0});
-        colours.put("Yellow", new int[]{255, 211, 0});
         colours.put("Yellow Orange", new int[]{255, 174, 66});
         colours.put("Yellow Process", new int[]{255, 239, 0});
         colours.put("Yellow Ryb", new int[]{254, 254, 51});
