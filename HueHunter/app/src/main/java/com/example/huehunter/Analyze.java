@@ -363,9 +363,6 @@ public class Analyze extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
-            sayColour("blue");
-
             String uri = outPutfileUri.toString();
             Log.e("uri-:", uri);
             Toast.makeText(this, outPutfileUri.toString(), Toast.LENGTH_LONG).show();
