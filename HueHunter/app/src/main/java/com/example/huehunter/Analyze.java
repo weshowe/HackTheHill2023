@@ -124,10 +124,11 @@ public class Analyze extends AppCompatActivity {
                         circle.setVisibility(View.VISIBLE);
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
-                        magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
-
                         circle.setX((int)event.getX()+75);
                         circle.setY((int)event.getY()+115);
+                        magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
+
+
 
 
                         // Get location of the small circle
@@ -260,10 +261,10 @@ public class Analyze extends AppCompatActivity {
 
 
 /*
-=======
+
     }
 
->>>>>>> Stashed changes
+
     private static String getColorName(String hexColorCode, Map<String, Object> colorMap) {
         String colorName = "unknown";
         if (hexColorCode.length() == 7 && hexColorCode.startsWith("#")) {
@@ -274,7 +275,6 @@ public class Analyze extends AppCompatActivity {
         }
         return colorName;
     }
-<<<<<<< Updated upstream
 */
     Bitmap bitmap = null;
         cameraButton.setOnClickListener(view -> {
