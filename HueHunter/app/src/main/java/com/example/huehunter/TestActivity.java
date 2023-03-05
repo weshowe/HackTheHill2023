@@ -44,13 +44,13 @@ public class TestActivity extends AppCompatActivity {
 
         Paint paint = new Paint();
         //paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#BC544B"));
+        paint.setColor(Color.parseColor("#b1766f"));
         redCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.parseColor("#AEF359"));
+        paint.setColor(Color.parseColor("#7e9760"));
         greenCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.parseColor("#63C5DA"));
+        paint.setColor(Color.parseColor("#4e9689"));
         blueCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.parseColor("#DFFE00"));
+        paint.setColor(Color.parseColor("#6693a8"));
         yellowCanvas.drawRect(0, 0, 100, 100, paint);
 
         ImageView redView = (ImageView)findViewById(R.id.red_square);
