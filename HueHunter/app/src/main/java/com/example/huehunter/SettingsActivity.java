@@ -28,8 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public void goToTest(View view) {
-        Intent intent = new Intent(SettingsActivity.this, TestActivity.class);
+    public void goHome(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
