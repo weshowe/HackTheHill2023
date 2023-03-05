@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/absoluteLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity">
+
+    <ImageView
+        android:id="@+id/green_square"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/red_square"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="184dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/by_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="332dp"
+        android:text="Do these squares the same?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_switch" />
+
+    <ImageView
+        android:id="@+id/yellow_square"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_switch" />
+
+    <ImageView
+        android:id="@+id/blue_square"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="152dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_switch" />
+
+    <Switch
+        android:id="@+id/rg_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="346dp"
+        android:text="Do these squares look the same?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="83dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

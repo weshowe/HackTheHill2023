@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:dialogTitle="Select colour blindness type"
+        android:defaultValue="0"
+        android:entries="@array/settings_colour_blind_types_titles"
+        android:entryValues="@array/settings_colour_blind_types_values"
+        android:key="colour_blind_type"
+        android:title="Colour Blind Type" />
+    <Preference
+        android:summary="Test your colourblindness"
+        android:title="Colour Blind Test">
+        <intent
+            android:action="com.example.huehunter.SETTING_START_ACTIVITY"
+            android:targetClass="com.example.huehunter.TestActivity"
+            android:targetPackage="com.example.huehunter"/>
+    </Preference>
+</PreferenceScreen>

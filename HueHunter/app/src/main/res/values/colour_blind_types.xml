@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_colour_blind_types_titles">
+        <item>Red-Green</item>
+        <item>Blue-Yellow</item>
+        <item>Monochromacy</item>
+        <item>Normal Colour Vision</item>
+    </string-array>
+    <string-array name="settings_colour_blind_types_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>0</item>
+    </string-array>
+</resources>
