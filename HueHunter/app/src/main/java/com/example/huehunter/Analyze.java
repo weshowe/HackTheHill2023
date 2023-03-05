@@ -129,11 +129,67 @@ public class Analyze extends AppCompatActivity {
                         circle.setY((int)event.getY()+115);
 
                         bitmap = view.getDrawingCache();
-                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
-                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+
+                        int n = 1;
+                        int center_x = (int)event.getX();
+                        int center_y = (int)event.getY();
+                        int bitmap_height = bitmap.getHeight();
+                        int bitmap_width = bitmap.getWidth();
+
+                        int leftBound = center_x - n;
+                        int rightBound = center_x + n;
+                        int upBound = center_y - n;
+                        int downBound = center_y + n;
+
+                        if(rightBound > bitmap_width){
+                            int offset = rightBound - bitmap_width;
+                            rightBound = rightBound - offset;
+                            leftBound = leftBound - offset;
+                        }
+
+                        if(0 > leftBound){
+                            int offset = 0 - leftBound;
+                            rightBound = rightBound + offset;
+                            leftBound = leftBound + offset;
+                        }
+
+                        if(downBound > bitmap_height){
+                            int offset = downBound - bitmap_height;
+                            downBound = downBound - offset;
+                            upBound = upBound - offset;
+                        }
+
+                        if(0 > upBound){
+                            int offset = 0 - upBound;
+                            upBound = upBound + offset;
+                            downBound = downBound + offset;
+                        }
+
+                        int[] zoom_pixels = new int[(2*n + 1) * (2*n + 1)];
+                        /*
+                        try {
+                            bitmap.getPixels(zoom_pixels, 0, 32*n, leftBound, upBound, n, n);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid Position");
+                            break;
+                        }
+                        */
+                        int pixel_counter = 0;
+
+                        for(int q = leftBound; q <= rightBound; q++){
+                            for(int r = upBound; r <= downBound; r++){
+                                zoom_pixels[pixel_counter] = bitmap.getPixel(q,r);
+                                pixel_counter = pixel_counter + 1;
+                            }
+                        }
+                        //System.out.println(center_x + " " + center_y);
+                        //System.out.println(bitmap_height + " " + bitmap_width + " " + upBound + " " + leftBound + " " + downBound + " " + rightBound);
+                        //System.out.println(Arrays.toString(zoom_pixels));
+
+                        //int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+                        //int r = Color.red(pixel);
+                        //int g = Color.green(pixel);
+                        //int b = Color.blue(pixel)
 //                        int orig_height = bitmap.getHeight();
 //                        int orig_width = bitmap.getWidth();
 //
@@ -152,50 +208,139 @@ public class Analyze extends AppCompatActivity {
 //                            System.out.println("Invalid Position");
 //                            break;
 //                        }
-//
-//
-                      int[] pixel_sum = {r,g,b};
-//
-                        // ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
-//                        for(int i=0; i<zoom_pixels.length; i++) {
-//                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
-//                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
-//                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
-//                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
-//                        }
-//
-//                        for (int a = 0; a < pixel_sum.length; a++) {
-//                            pixel_sum[a] = pixel_sum[a] / zoom_pixels.length;
-//
-//                        }
 
-                        double[] colourDistances = new double[MainActivity.colours.size()];
+                        // Convert the retrieved pixel array into a normalized one (RGB instead of packed integer).
+                        double [][] zoom_pixels_normalized = new double[zoom_pixels.length][3];
+                        for(int i=0; i<zoom_pixels.length; i++) {
+                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            zoom_pixels_normalized[i][0] = (double)((zoom_pixels[i] >> 16) & 0xff);
+                            zoom_pixels_normalized[i][1] = (double)((zoom_pixels[i] >> 8) & 0xff);
+                            zoom_pixels_normalized[i][2] = (double)((zoom_pixels[i]) & 0xff);
+                        }
+
+                        // Run k-means and get assignment.
+                        KMeans clustering = new KMeans.Builder(2, zoom_pixels_normalized)
+                                .iterations(10)
+                                .pp(true)
+                                .epsilon(.01)
+                                .useEpsilon(true)
+                                .build();
+
+                        int[] assignment = clustering.getAssignment();
+                        clustering = null;
+
+                        // Some math to determine if there are similar amounts of different colours.
+                        int one_count = 0;
+
+                        for(int p = 0; p < assignment.length; p++){
+                            one_count = one_count + assignment[p];
+                        }
+
+                        int zero_count = assignment.length - one_count;
+
+                        // Partition and sum cluster elements to get both colours.
+                        int [] sum_zero = {0,0,0};
+                        int [] sum_one =  {0,0,0};
+
+                        for(int t = 0; t < assignment.length; t++){
+                            if(assignment[t] == 0){
+                                sum_zero[0] = sum_zero[0] + (int)zoom_pixels_normalized[t][0];
+                                sum_zero[1] = sum_zero[1] + (int)zoom_pixels_normalized[t][1];
+                                sum_zero[2] = sum_zero[2] + (int)zoom_pixels_normalized[t][2];
+                            }
+                            else{
+                                sum_one[0] = sum_one[0] + (int)zoom_pixels_normalized[t][0];
+                                sum_one[1] = sum_one[1] + (int)zoom_pixels_normalized[t][1];
+                                sum_one[2] = sum_one[2] + (int)zoom_pixels_normalized[t][2];
+                            }
+                        }
+
+                        /*
+                        // Sum pixels to find the mean.
+                        int[] pixel_sum = {0,0,0};
+//
+                        //ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
+                        for(int i=0; i<zoom_pixels.length; i++) {
+                           //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
+                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
+                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
+                        }
+//                      */
+
+                        for (int a = 0; a < sum_zero.length; a++) {
+                            if(zero_count == 0){
+                                break;
+                            }
+                            sum_zero[a] = sum_zero[a] / zero_count;
+                        }
+
+                        for (int a = 0; a < sum_one.length; a++) {
+                            if(one_count == 0){
+                                break;
+                            }
+                            sum_one[a] = sum_one[a] / one_count;
+                        }
+
+                        //colorTellingText.setBackgroundColor(Color.rgb(pixel_sum[0],pixel_sum[1],pixel_sum[2]));
+
+                        double[] colourDistances0 = new double[MainActivity.colours.size()];
+                        double[] colourDistances1 = new double[MainActivity.colours.size()];
                         //int[][] colourVals = (int[][])ColourMap.keySet().toArray();
 
-                        double minDist = Double.MAX_VALUE;
-                        String cName = "INVALID";
+                        double minDist0 = Double.MAX_VALUE;
+                        double minDist1 = Double.MAX_VALUE;
+
+                        String cName0 = "INVALID";
+                        String cName1 = "INVALID";
+
                         int counter = 0;
 
                         for (Map.Entry<String, int[]> entry : MainActivity.colours.entrySet()) {
                             String key = entry.getKey();
                             int[] value = entry.getValue();
 
-                            double curDist = cDist(pixel_sum, value);
-                            colourDistances[counter] = curDist;
+                            double curDist0 = cDist(sum_zero, value);
+                            double curDist1 = cDist(sum_one, value);
 
-                            if(curDist < minDist){
-                                minDist = curDist;
-                                cName = key;
+                            colourDistances0[counter] = curDist0;
+                            colourDistances1[counter] = curDist1;
+
+                            if(curDist0 < minDist0){
+                                minDist0 = curDist0;
+                                cName0 = key;
+                            }
+
+                            if(curDist1 < minDist1){
+                                minDist1 = curDist1;
+                                cName1 = key;
                             }
 
                             counter = counter + 1;
 
                         }
 
-                        //System.out.println(Arrays.toString(pixel_sum));
+                        String outString = "";
 
-                        colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
-                        sayColour(cName);
+                        if(Math.abs(zero_count - one_count) > 0.3 * assignment.length){
+                            if(one_count > zero_count){
+                                outString = cName1;
+                                colorTellingText.setText(outString + " " + Arrays.toString(sum_one));
+                            }
+
+                            else{
+                                outString = cName0;
+                                colorTellingText.setText(outString + " " + Arrays.toString(sum_zero));
+                            }
+                            // This means that there are much more of one cluster than another.
+                        }
+
+                        else{
+                            outString = cName0 + " and " + cName1;
+                            colorTellingText.setText(cName0 + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one));
+                        }
+                        //colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
+                        sayColour(outString);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
@@ -305,9 +450,6 @@ public class Analyze extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-
-            sayColour("blue");
-
             String uri = outPutfileUri.toString();
             Log.e("uri-:", uri);
             Toast.makeText(this, outPutfileUri.toString(), Toast.LENGTH_LONG).show();

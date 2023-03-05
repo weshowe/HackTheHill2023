@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public void openAbout(View view) {}
 
     public void openSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void cameraClick(View view){
