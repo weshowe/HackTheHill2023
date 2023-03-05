@@ -4,13 +4,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.CAMERA
             },100);
         }
-
+        
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
     public void openGallery(View view) {
