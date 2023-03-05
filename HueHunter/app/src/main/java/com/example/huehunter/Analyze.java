@@ -111,13 +111,13 @@ public class Analyze extends AppCompatActivity {
 
                         bitmap = view.getDrawingCache();
 
-                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
-                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
-                        layout.setBackgroundColor(Color.rgb(r,g,b));
-
+//                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+//                        int r = Color.red(pixel);
+//                        int g = Color.green(pixel);
+//                        int b = Color.blue(pixel);
+//                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+//                        layout.setBackgroundColor(Color.rgb(r,g,b));
+//
 
                         int n = 4;
                         int center_x = (int)event.getX();
@@ -130,7 +130,7 @@ public class Analyze extends AppCompatActivity {
                         int upBound = center_y - n;
                         int downBound = center_y + n;
 
-                        if(rightBound >= bitmap_width - 1){
+                        if(rightBound > bitmap_width - 1){
                             int offset = rightBound - (bitmap_width - 1);
                             rightBound = rightBound - offset;
                             leftBound = leftBound - offset;
@@ -142,7 +142,7 @@ public class Analyze extends AppCompatActivity {
                             leftBound = leftBound + offset;
                         }
 
-                        if(downBound >= bitmap_height){
+                        if(downBound > bitmap_height - 1){
                             int offset = downBound - (bitmap_height - 1);
                             downBound = downBound - offset;
                             upBound = upBound - offset;
