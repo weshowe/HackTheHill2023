@@ -129,11 +129,67 @@ public class Analyze extends AppCompatActivity {
                         circle.setY((int)event.getY()+115);
 
                         bitmap = view.getDrawingCache();
-                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
-                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+
+                        int n = 1;
+                        int center_x = (int)event.getX();
+                        int center_y = (int)event.getY();
+                        int bitmap_height = bitmap.getHeight();
+                        int bitmap_width = bitmap.getWidth();
+
+                        int leftBound = center_x - n;
+                        int rightBound = center_x + n;
+                        int upBound = center_y - n;
+                        int downBound = center_y + n;
+
+                        if(rightBound > bitmap_width){
+                            int offset = rightBound - bitmap_width;
+                            rightBound = rightBound - offset;
+                            leftBound = leftBound - offset;
+                        }
+
+                        if(0 > leftBound){
+                            int offset = 0 - leftBound;
+                            rightBound = rightBound + offset;
+                            leftBound = leftBound + offset;
+                        }
+
+                        if(downBound > bitmap_height){
+                            int offset = downBound - bitmap_height;
+                            downBound = downBound - offset;
+                            upBound = upBound - offset;
+                        }
+
+                        if(0 > upBound){
+                            int offset = 0 - upBound;
+                            upBound = upBound + offset;
+                            downBound = downBound + offset;
+                        }
+
+                        int[] zoom_pixels = new int[(2*n + 1) * (2*n + 1)];
+                        /*
+                        try {
+                            bitmap.getPixels(zoom_pixels, 0, 32*n, leftBound, upBound, n, n);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid Position");
+                            break;
+                        }
+                        */
+                        int pixel_counter = 0;
+
+                        for(int q = leftBound; q <= rightBound; q++){
+                            for(int r = upBound; r <= downBound; r++){
+                                zoom_pixels[pixel_counter] = bitmap.getPixel(q,r);
+                                pixel_counter = pixel_counter + 1;
+                            }
+                        }
+                        //System.out.println(center_x + " " + center_y);
+                        //System.out.println(bitmap_height + " " + bitmap_width + " " + upBound + " " + leftBound + " " + downBound + " " + rightBound);
+                        //System.out.println(Arrays.toString(zoom_pixels));
+
+                        //int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+                        //int r = Color.red(pixel);
+                        //int g = Color.green(pixel);
+                        //int b = Color.blue(pixel)
 //                        int orig_height = bitmap.getHeight();
 //                        int orig_width = bitmap.getWidth();
 //
@@ -154,20 +210,22 @@ public class Analyze extends AppCompatActivity {
 //                        }
 //
 //
-                      int[] pixel_sum = {r,g,b};
+                      int[] pixel_sum = {0,0,0};
 //
-                        // ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
-//                        for(int i=0; i<zoom_pixels.length; i++) {
-//                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
-//                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
-//                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
-//                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
-//                        }
+                        //ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
+                        for(int i=0; i<zoom_pixels.length; i++) {
+                           //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
+                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
+                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
+                        }
 //
-//                        for (int a = 0; a < pixel_sum.length; a++) {
-//                            pixel_sum[a] = pixel_sum[a] / zoom_pixels.length;
-//
-//                        }
+                        for (int a = 0; a < pixel_sum.length; a++) {
+                            pixel_sum[a] = pixel_sum[a] / zoom_pixels.length;
+
+                        }
+
+                        colorTellingText.setBackgroundColor(Color.rgb(pixel_sum[0],pixel_sum[1],pixel_sum[2]));
 
                         double[] colourDistances = new double[MainActivity.colours.size()];
                         //int[][] colourVals = (int[][])ColourMap.keySet().toArray();
