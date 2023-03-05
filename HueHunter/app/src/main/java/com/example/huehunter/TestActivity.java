@@ -44,13 +44,13 @@ public class TestActivity extends AppCompatActivity {
 
         Paint paint = new Paint();
         //paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.parseColor("#b1766f"));
         redCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.GREEN);
+        paint.setColor(Color.parseColor("#7e9760"));
         greenCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.parseColor("#4e9689"));
         blueCanvas.drawRect(0, 0, 100, 100, paint);
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.parseColor("#6693a8"));
         yellowCanvas.drawRect(0, 0, 100, 100, paint);
 
         ImageView redView = (ImageView)findViewById(R.id.red_square);
@@ -113,7 +113,7 @@ public class TestActivity extends AppCompatActivity {
                     Toast.makeText(TestActivity.this, "You are blue-yellow colour blind", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(0));
-                    Toast.makeText(TestActivity.this, "You are normal", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TestActivity.this, "You are not colour blind", Toast.LENGTH_SHORT).show();
                 }
             }
             edit.putBoolean("isDirtyPrefs", true);
@@ -137,7 +137,7 @@ public class TestActivity extends AppCompatActivity {
                     Toast.makeText(TestActivity.this, "You are red-green colour blind", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(0));
-                    Toast.makeText(TestActivity.this, "You are normal", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TestActivity.this, "You are not colour blind", Toast.LENGTH_SHORT).show();
                 }
             }
             edit.putBoolean("isDirtyPrefs", true);

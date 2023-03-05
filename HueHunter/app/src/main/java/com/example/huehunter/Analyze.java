@@ -114,26 +114,37 @@ public class Analyze extends AppCompatActivity {
 
                         bitmap = view.getDrawingCache();
 
-                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        int r = Color.red(pixel);
-                        int g = Color.green(pixel);
-                        int b = Color.blue(pixel);
-                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
-                        layout.setBackgroundColor(Color.rgb(r,g,b));
-
+//                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+//                        int r = Color.red(pixel);
+//                        int g = Color.green(pixel);
+//                        int b = Color.blue(pixel);
+//                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+//                        layout.setBackgroundColor(Color.rgb(r,g,b));
+//
 
                         int n = 4;
                         int center_x = (int)event.getX();
                         int center_y = (int)event.getY();
                         int bitmap_height = bitmap.getHeight();
                         int bitmap_width = bitmap.getWidth();
+                        if (center_x < 0) {
+                            center_x = 0;
+                        } else if (center_x > bitmap_width - 1) {
+                            center_x = bitmap_width - 1;
+                        }
+
+                        if (center_y < 0) {
+                            center_y = 0;
+                        } else if (center_y > bitmap_height - 1) {
+                            center_y = bitmap_height - 1;
+                        }
 
                         int leftBound = center_x - n;
                         int rightBound = center_x + n;
                         int upBound = center_y - n;
                         int downBound = center_y + n;
 
-                        if(rightBound >= bitmap_width - 1){
+                        if(rightBound > bitmap_width - 1){
                             int offset = rightBound - (bitmap_width - 1);
                             rightBound = rightBound - offset;
                             leftBound = leftBound - offset;
@@ -145,7 +156,7 @@ public class Analyze extends AppCompatActivity {
                             leftBound = leftBound + offset;
                         }
 
-                        if(downBound >= bitmap_height){
+                        if(downBound > bitmap_height - 1){
                             int offset = downBound - (bitmap_height - 1);
                             downBound = downBound - offset;
                             upBound = upBound - offset;
@@ -178,10 +189,11 @@ public class Analyze extends AppCompatActivity {
                         //System.out.println(bitmap_height + " " + bitmap_width + " " + upBound + " " + leftBound + " " + downBound + " " + rightBound);
                         //System.out.println(Arrays.toString(zoom_pixels));
 
-                        //int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        //int r = Color.red(pixel);
-                        //int g = Color.green(pixel);
-                        //int b = Color.blue(pixel)
+                        int pixel = bitmap.getPixel(center_x,center_y);
+                        int r = Color.red(pixel);
+                        int g = Color.green(pixel);
+                        int b = Color.blue(pixel);
+                        layout.setBackgroundColor(Color.rgb(r,g,b));
 //                        int orig_height = bitmap.getHeight();
 //                        int orig_width = bitmap.getWidth();
 //
@@ -375,6 +387,8 @@ public class Analyze extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();
                     tts.setLanguage(Locale.US); // Set to en_US as a fallback
                 }
+
+                tts.setSpeechRate(0.75f);
 
             } else {
                 Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();

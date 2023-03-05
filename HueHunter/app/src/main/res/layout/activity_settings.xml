@@ -14,7 +14,8 @@
         android:text="Back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="#FFFFFF"/>
+        android:backgroundTint="#FFFFFF"
+        android:onClick="goHome"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"

@@ -31,12 +31,11 @@
     <Switch
         android:id="@+id/by_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="332dp"
-        android:textSize="18dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="264dp"
         android:text="Do these look squares the same?"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rg_switch" />
 
@@ -44,7 +43,7 @@
         android:id="@+id/yellow_square"
         android:layout_width="135dp"
         android:layout_height="135dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -56,17 +55,17 @@
         android:layout_width="135dp"
         android:layout_height="135dp"
         android:layout_marginStart="76dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rg_switch" />
 
     <Switch
         android:id="@+id/rg_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_marginTop="332dp"
-        android:textSize="18dp"
         android:text="Do these squares look the same?"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
