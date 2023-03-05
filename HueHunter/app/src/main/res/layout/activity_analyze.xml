@@ -3,85 +3,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1DB7AE"
     tools:context=".Analyze">
 
     <TextView
         android:id="@+id/colorTellingText"
-        android:layout_width="160dp"
-        android:layout_height="19dp"
-        android:layout_marginStart="183dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="183dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="21dp"
         android:hint="Colour"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.321"
+        app:layout_constraintHorizontal_bias="0.448"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="344dp"
-        android:layout_height="443dp"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="62dp"
+        android:layout_width="411dp"
+        android:layout_height="591dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,16:9"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.403"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/colorTellingText"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_launcher_background" />
-
-    <Button
-        android:id="@+id/camera_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="48dp"
-        android:text="camera"
-        app:layout_constraintEnd_toStartOf="@+id/gallery_button"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/gallery_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="88dp"
-        android:text="gallery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="86dp"
-        android:text="setting"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_button"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginBottom="87dp"
-        android:text="information"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_button"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/invisibleCircle"
@@ -93,4 +48,16 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="153dp"
         tools:layout_editor_absoluteY="257dp" />
+
+    <Button
+        android:id="@+id/goHomeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:onClick="goHome"
+        android:text="back"
+        app:layout_constraintBottom_toTopOf="@+id/colorTellingText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

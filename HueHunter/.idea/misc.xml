@@ -3,11 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bottom_background_light_green.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.1985" />
+        <entry key="app/src/main/res/drawable/green_banner_background.xml" value="0.321" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1985" />
-        <entry key="app/src/main/res/layout/activity_analyze.xml" value="0.4237047551454933" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/white_button_background.xml" value="0.2315" />
+        <entry key="app/src/main/res/layout/activity_analyze.xml" value="0.3124663092273329" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19656829833984374" />
         <entry key="app/src/main/res/layout/activity_take_aphoto.xml" value="0.2807971014492754" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -16,5 +21,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.45" />
+      </ProjectState>
+    </option>
   </component>
 </project>

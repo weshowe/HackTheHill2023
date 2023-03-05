@@ -1,6 +1,7 @@
 package com.example.huehunter;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.speech.tts.TextToSpeech;
@@ -57,9 +59,9 @@ public class Analyze extends AppCompatActivity {
     String mCurrentPhotoPath;
     TextView circle;
     TextView colorTellingText;
+    ConstraintLayout layout;
 
     Magnifier magnifier;
-    Map<String, Object> colorNames;
     TextToSpeech tts;
 
     Bitmap bitmap;
@@ -75,11 +77,14 @@ public class Analyze extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
 
+        //hiding the title bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
+
         view = (ImageView) this.findViewById(R.id.imageView);
         circle = (TextView) findViewById(R.id.invisibleCircle);
         colorTellingText = findViewById(R.id.colorTellingText);
-        galleryButton = (Button) findViewById(R.id.gallery_button);
-        cameraButton = (Button) findViewById(R.id.camera_button);
+        layout = (ConstraintLayout) findViewById(R.id.constraint_layout);
 
 
         if (MainActivity.isItGallery == false) {
@@ -134,6 +139,7 @@ public class Analyze extends AppCompatActivity {
                         int g = Color.green(pixel);
                         int b = Color.blue(pixel);
                         colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+                        layout.setBackgroundColor(Color.rgb(r,g,b));
 //                        int orig_height = bitmap.getHeight();
 //                        int orig_width = bitmap.getWidth();
 //
@@ -191,10 +197,13 @@ public class Analyze extends AppCompatActivity {
                             counter = counter + 1;
 
                         }
+                        int[] temp = MainActivity.colours.get(cName);
+                        colorTellingText.setTextColor(Color.rgb(temp[0],temp[1],temp[2]));
 
                         //System.out.println(Arrays.toString(pixel_sum));
 
-                        colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
+                        colorTellingText.setText(cName);
+
                         sayColour(cName);
                         break;
                     }
@@ -225,11 +234,6 @@ public class Analyze extends AppCompatActivity {
 
         });
 
-        galleryButton.setOnClickListener(view -> {
-            MainActivity.isItGallery = true;
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, 2);
-        });
 
 
 /*
@@ -250,12 +254,6 @@ public class Analyze extends AppCompatActivity {
 <<<<<<< Updated upstream
 */
     Bitmap bitmap = null;
-        cameraButton.setOnClickListener(view -> {
-            MainActivity.isItGallery = false;
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-        });
     }
 
 
@@ -337,5 +335,9 @@ public class Analyze extends AppCompatActivity {
         return Math.sqrt(Math.pow(y[2] - x[2],2) + Math.pow(y[1] - x[1],2) + Math.pow(y[0] - x[0],2));
     }
 
+    public void goHome(View view){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 }
 
