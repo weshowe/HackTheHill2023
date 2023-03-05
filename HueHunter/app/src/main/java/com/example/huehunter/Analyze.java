@@ -124,6 +124,17 @@ public class Analyze extends AppCompatActivity {
                         int center_y = (int)event.getY();
                         int bitmap_height = bitmap.getHeight();
                         int bitmap_width = bitmap.getWidth();
+                        if (center_x < 0) {
+                            center_x = 0;
+                        } else if (center_x > bitmap_width - 1) {
+                            center_x = bitmap_width - 1;
+                        }
+
+                        if (center_y < 0) {
+                            center_y = 0;
+                        } else if (center_y > bitmap_height - 1) {
+                            center_y = bitmap_height - 1;
+                        }
 
                         int leftBound = center_x - n;
                         int rightBound = center_x + n;
@@ -175,10 +186,11 @@ public class Analyze extends AppCompatActivity {
                         //System.out.println(bitmap_height + " " + bitmap_width + " " + upBound + " " + leftBound + " " + downBound + " " + rightBound);
                         //System.out.println(Arrays.toString(zoom_pixels));
 
-                        //int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
-                        //int r = Color.red(pixel);
-                        //int g = Color.green(pixel);
-                        //int b = Color.blue(pixel)
+                        int pixel = bitmap.getPixel(center_x,center_y);
+                        int r = Color.red(pixel);
+                        int g = Color.green(pixel);
+                        int b = Color.blue(pixel);
+                        layout.setBackgroundColor(Color.rgb(r,g,b));
 //                        int orig_height = bitmap.getHeight();
 //                        int orig_width = bitmap.getWidth();
 //
