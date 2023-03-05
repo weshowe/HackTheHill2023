@@ -110,6 +110,9 @@ public class Analyze extends AppCompatActivity {
 
         magnifier = new Magnifier(view2);
         magnifier.setZoom(4);
+
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache(true);
         view.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("NewApi")
             @Override
@@ -122,47 +125,49 @@ public class Analyze extends AppCompatActivity {
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
                         magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
-                        circle.setX(event.getRawX() - viewPosition[0] + 70);
-                        circle.setY(event.getRawY() - viewPosition[1] + 130);
+                        circle.setX((int)event.getX()+75);
+                        circle.setY((int)event.getY()+115);
 
-                        // Get location of the small circle
-                        float X = circle.getX();
-                        float Y = circle.getY();
-
-                        int orig_height = bitmap.getHeight();
-                        int orig_width = bitmap.getWidth();
-
-                        int height_offset = magnifier.getSourceHeight();
-                        int width_offset = magnifier.getSourceWidth();
-                        Point pos = magnifier.getSourcePosition();
-
-                        //int[] zoom_pixels = new int[height_offset * width_offset];
-                        int[] zoom_pixels = new int[1];
-
-                        System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
-
-                        try {
-                            bitmap.getPixels(zoom_pixels, 0, 1, pos.x, pos.y, 1, 1);
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Invalid Position");
-                            break;
-                        }
-
-
-                        int[] pixel_sum = {0,0,0};
-
+                        bitmap = view.getDrawingCache();
+                        int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
+                        int r = Color.red(pixel);
+                        int g = Color.green(pixel);
+                        int b = Color.blue(pixel);
+                        colorTellingText.setBackgroundColor(Color.rgb(r,g,b));
+//                        int orig_height = bitmap.getHeight();
+//                        int orig_width = bitmap.getWidth();
+//
+//                        int height_offset = magnifier.getHeight();
+//                        int width_offset = magnifier.getWidth();
+//
+//
+//                        //int[] zoom_pixels = new int[height_offset * width_offset];
+//                        int[] zoom_pixels = new int[1];
+//
+//                        //System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
+//
+//                        try {
+//                            bitmap.getPixels(zoom_pixels, 0, 1, (int)X, (int)Y, 1, 1);
+//                        } catch (IllegalArgumentException e) {
+//                            System.out.println("Invalid Position");
+//                            break;
+//                        }
+//
+//
+                      int[] pixel_sum = {r,g,b};
+//
                         // ARGB format: Alpha, R, G, B Note: Removed alpha so it's RGB
-                        for(int i=0; i<zoom_pixels.length; i++) {
-                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
-                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
-                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
-                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
-                        }
-
-                        for (int a = 0; a < pixel_sum.length; a++) {
-                            pixel_sum[a] = pixel_sum[a] / zoom_pixels.length;
-
-                        }
+//                        for(int i=0; i<zoom_pixels.length; i++) {
+//                            //pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 24) & 0xff); // or color >>> 24
+//                            pixel_sum[0] = pixel_sum[0] + ((zoom_pixels[i] >> 16) & 0xff);
+//                            pixel_sum[1] = pixel_sum[1] + ((zoom_pixels[i] >> 8) & 0xff);
+//                            pixel_sum[2] = pixel_sum[2] + ((zoom_pixels[i]) & 0xff);
+//                        }
+//
+//                        for (int a = 0; a < pixel_sum.length; a++) {
+//                            pixel_sum[a] = pixel_sum[a] / zoom_pixels.length;
+//
+//                        }
 
                         double[] colourDistances = new double[MainActivity.colours.size()];
                         //int[][] colourVals = (int[][])ColourMap.keySet().toArray();
@@ -187,16 +192,8 @@ public class Analyze extends AppCompatActivity {
 
                         }
 
-                        //float mean_pixel = pixel_sum / zoom_pixels.length;
-                        System.out.println(Arrays.toString(pixel_sum));
+                        //System.out.println(Arrays.toString(pixel_sum));
 
-
-                        //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
-                        //Color newColor = new Color(r,g,b);
-                        //Log.i("i",getColorName(finalColour,colorNames));
-                        //colorTellingText.setText(getColorName(finalColour,colorNames));
-                        //sayColour(getColorName(finalColour,colorNames));
-                        //String finalColour = String.format("#%02x%02x%02x", r, g, b); // rgb in hex format
                         colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
                         sayColour(cName);
                         break;
