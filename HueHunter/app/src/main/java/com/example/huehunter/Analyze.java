@@ -108,7 +108,7 @@ public class Analyze extends AppCompatActivity {
 
                         bitmap = view.getDrawingCache();
 
-                        int n = 1;
+                        int n = 4;
                         int center_x = (int)event.getX();
                         int center_y = (int)event.getY();
                         int bitmap_height = bitmap.getHeight();
@@ -198,7 +198,7 @@ public class Analyze extends AppCompatActivity {
 
                         // Run k-means and get assignment.
                         KMeans clustering = new KMeans.Builder(2, zoom_pixels_normalized)
-                                .iterations(10)
+                                .iterations(20)
                                 .pp(true)
                                 .epsilon(.01)
                                 .useEpsilon(true)
@@ -273,6 +273,8 @@ public class Analyze extends AppCompatActivity {
                         String cName1 = "INVALID";
 
                         int counter = 0;
+                        int[] curCol0 = {0,0,0};
+                        int[] curCol1 = {0,0,0};
 
                         for (Map.Entry<String, int[]> entry : MainActivity.colours.entrySet()) {
                             String key = entry.getKey();
@@ -287,11 +289,13 @@ public class Analyze extends AppCompatActivity {
                             if(curDist0 < minDist0){
                                 minDist0 = curDist0;
                                 cName0 = key;
+                                curCol0 = value;
                             }
 
                             if(curDist1 < minDist1){
                                 minDist1 = curDist1;
                                 cName1 = key;
+                                curCol1 = value;
                             }
 
                             counter = counter + 1;
@@ -300,22 +304,32 @@ public class Analyze extends AppCompatActivity {
 
                         String outString = "";
 
-                        if(Math.abs(zero_count - one_count) > 0.3 * assignment.length){
+                        if(Math.abs(zero_count - one_count) > 0.8 * assignment.length){
                             if(one_count > zero_count){
                                 outString = cName1;
-                                colorTellingText.setText(outString + " " + Arrays.toString(sum_one));
+                                colorTellingText.setText(outString + " " + Arrays.toString(curCol1));
+                                colorTellingText.setBackgroundColor(Color.rgb(curCol1[0],curCol1[1],curCol1[2]));
                             }
 
                             else{
                                 outString = cName0;
-                                colorTellingText.setText(outString + " " + Arrays.toString(sum_zero));
+                                colorTellingText.setText(outString + " " + Arrays.toString(curCol0));
+                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
                             // This means that there are much more of one cluster than another.
                         }
 
                         else{
-                            outString = cName0 + " and " + cName1;
-                            colorTellingText.setText(cName0 + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one));
+                            if(cName0.equals(cName1)){
+                                outString = cName0;
+                                colorTellingText.setText(cName0 + " " + Arrays.toString(curCol0));
+                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
+                            }
+
+                            else {
+                                outString = cName0 + " and " + cName1;
+                                colorTellingText.setText(cName0 + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one));
+                            }
                         }
                         //colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
                         sayColour(outString);
