@@ -33,10 +33,6 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goHome(View view){
-        Intent intent = new Intent(SettingsActivity.this, TestActivity.class);
-        startActivity(intent);
-    }
     @Override
     protected void onResume() {
         super.onResume();

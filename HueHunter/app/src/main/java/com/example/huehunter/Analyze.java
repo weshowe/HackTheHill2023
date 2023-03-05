@@ -340,14 +340,14 @@ public class Analyze extends AppCompatActivity {
                         if(Math.abs(zero_count - one_count) > 0.8 * assignment.length){
                             if(one_count > zero_count){
                                 outString = cName1;
-                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol1)*/);
-                                colorTellingText.setBackgroundColor(Color.rgb(curCol1[0],curCol1[1],curCol1[2]));
+//                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol1)*/);
+//                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
 
                             else{
                                 outString = cName0;
-                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol0)*/);
-                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
+//                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol0)*/);
+//                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
                             // This means that there are much more of one cluster than another.
                         }
@@ -355,15 +355,17 @@ public class Analyze extends AppCompatActivity {
                         else{
                             if(cName0.equals(cName1)){
                                 outString = cName0;
-                                colorTellingText.setText(cName0 /*+ " " + Arrays.toString(curCol0)*/);
-                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
+//                                colorTellingText.setText(cName0 /*+ " " + Arrays.toString(curCol0)*/);
+//                                colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
 
                             else {
                                 outString = cName0 + " and " + cName1;
-                                colorTellingText.setText(cName0/* + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one)*/);
+//                                colorTellingText.setText(cName0/* + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one)*/);
                             }
                         }
+                        colorTellingText.setText(cName0);
+                        colorTellingText.setBackgroundColor(Color.rgb(curCol0[0], curCol0[1], curCol0[2]));
                         //colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
                         sayColour(outString);
 
