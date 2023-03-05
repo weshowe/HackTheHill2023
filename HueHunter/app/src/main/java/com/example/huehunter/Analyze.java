@@ -119,8 +119,8 @@ public class Analyze extends AppCompatActivity {
                         int upBound = center_y - n;
                         int downBound = center_y + n;
 
-                        if(rightBound > bitmap_width){
-                            int offset = rightBound - bitmap_width;
+                        if(rightBound >= bitmap_width - 1){
+                            int offset = rightBound - (bitmap_width - 1);
                             rightBound = rightBound - offset;
                             leftBound = leftBound - offset;
                         }
@@ -131,8 +131,8 @@ public class Analyze extends AppCompatActivity {
                             leftBound = leftBound + offset;
                         }
 
-                        if(downBound > bitmap_height){
-                            int offset = downBound - bitmap_height;
+                        if(downBound >= bitmap_height){
+                            int offset = downBound - (bitmap_height - 1);
                             downBound = downBound - offset;
                             upBound = upBound - offset;
                         }
