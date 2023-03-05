@@ -12,11 +12,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -27,6 +29,9 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        //hiding the title bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
 
         Bitmap redBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         Canvas redCanvas = new Canvas(redBitmap);
@@ -96,15 +101,19 @@ public class TestActivity extends AppCompatActivity {
                 redGreen = true;
                 if (blueYellow) {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(3));
+                    Toast.makeText(TestActivity.this, "You are monochromatic", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(1));
+                    Toast.makeText(TestActivity.this, "You are red-green colour blind", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 redGreen = false;
                 if (blueYellow) {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(2));
+                    Toast.makeText(TestActivity.this, "You are blue-yellow colour blind", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(0));
+                    Toast.makeText(TestActivity.this, "You are normal", Toast.LENGTH_SHORT).show();
                 }
             }
             edit.putBoolean("isDirtyPrefs", true);
@@ -116,24 +125,29 @@ public class TestActivity extends AppCompatActivity {
                 blueYellow = true;
                 if (redGreen) {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(3));
+                    Toast.makeText(TestActivity.this, "You are monochromatic", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(2));
+                    Toast.makeText(TestActivity.this, "You are blue-yellow colour blind", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 blueYellow = false;
                 if (redGreen) {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(1));
+                    Toast.makeText(TestActivity.this, "You are red-green colour blind", Toast.LENGTH_SHORT).show();
                 } else {
                     edit.putString(SettingsActivity.KEY_PREF_COLOUR_BLIND, Integer.toString(0));
+                    Toast.makeText(TestActivity.this, "You are normal", Toast.LENGTH_SHORT).show();
                 }
             }
             edit.putBoolean("isDirtyPrefs", true);
             edit.apply();
+
         });
 
-        ImageButton backButton = (ImageButton) findViewById(R.id.back_button);
-        backButton.setOnClickListener(view -> {
-            finish();
-        });
+    }
+    public void goHome(View view){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -39,7 +39,6 @@ public class Analyze extends AppCompatActivity {
     ImageView view;
     Uri outPutfileUri;
     String mCurrentPhotoPath;
-    TextView circle;
     TextView colorTellingText;
 
     ConstraintLayout layout;
@@ -63,7 +62,6 @@ public class Analyze extends AppCompatActivity {
         getSupportActionBar().hide();
 
         view = (ImageView) this.findViewById(R.id.imageView);
-        circle = (TextView) findViewById(R.id.invisibleCircle);
         colorTellingText = findViewById(R.id.colorTellingText);
         layout = (ConstraintLayout) findViewById(R.id.constraint_layout);
 
@@ -107,12 +105,9 @@ public class Analyze extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         // Fall through.
                     case MotionEvent.ACTION_MOVE: {
-                        circle.setVisibility(View.VISIBLE);
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
                         magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
-                        circle.setX((int)event.getX()+75);
-                        circle.setY((int)event.getY()+115);
 
                         bitmap = view.getDrawingCache();
 
@@ -171,8 +166,8 @@ public class Analyze extends AppCompatActivity {
                         int pixel_counter = 0;
 
                         for(int q = leftBound; q <= rightBound; q++){
-                            for(int r = upBound; r <= downBound; r++){
-                                zoom_pixels[pixel_counter] = bitmap.getPixel(q,r);
+                            for(int a = upBound; a <= downBound; a++){
+                                zoom_pixels[pixel_counter] = bitmap.getPixel(q,a);
                                 pixel_counter = pixel_counter + 1;
                             }
                         }
@@ -317,26 +312,26 @@ public class Analyze extends AppCompatActivity {
                             counter = counter + 1;
 
                         }
-                        int[] temp = MainActivity.colours.get(cName);
-                        colorTellingText.setTextColor(Color.rgb(temp[0],temp[1],temp[2]));
+                        //int[] temp = MainActivity.colours.get(cName);
+                        //colorTellingText.setTextColor(Color.rgb(temp[0],temp[1],temp[2]));
 
                         String outString = "";
 
 
-                        colorTellingText.setText(cName);
+                        //colorTellingText.setText(cName);
 
-                        sayColour(cName);
+                        //sayColour(cName);
 
                         if(Math.abs(zero_count - one_count) > 0.8 * assignment.length){
                             if(one_count > zero_count){
                                 outString = cName1;
-                                colorTellingText.setText(outString + " " + Arrays.toString(curCol1));
+                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol1)*/);
                                 colorTellingText.setBackgroundColor(Color.rgb(curCol1[0],curCol1[1],curCol1[2]));
                             }
 
                             else{
                                 outString = cName0;
-                                colorTellingText.setText(outString + " " + Arrays.toString(curCol0));
+                                colorTellingText.setText(outString/* + " " + Arrays.toString(curCol0)*/);
                                 colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
                             // This means that there are much more of one cluster than another.
@@ -345,13 +340,13 @@ public class Analyze extends AppCompatActivity {
                         else{
                             if(cName0.equals(cName1)){
                                 outString = cName0;
-                                colorTellingText.setText(cName0 + " " + Arrays.toString(curCol0));
+                                colorTellingText.setText(cName0 /*+ " " + Arrays.toString(curCol0)*/);
                                 colorTellingText.setBackgroundColor(Color.rgb(curCol0[0],curCol0[1],curCol0[2]));
                             }
 
                             else {
                                 outString = cName0 + " and " + cName1;
-                                colorTellingText.setText(cName0 + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one));
+                                colorTellingText.setText(cName0/* + " " + Arrays.toString(sum_zero) + cName1 + " " + Arrays.toString(sum_one)*/);
                             }
                         }
                         //colorTellingText.setText(cName + " " + Arrays.toString(pixel_sum));
@@ -363,7 +358,6 @@ public class Analyze extends AppCompatActivity {
                         // Fall through.
                     case MotionEvent.ACTION_UP: {
                         magnifier.dismiss();
-                        circle.setVisibility(View.INVISIBLE);
                     }
                 }
                 return true;
@@ -372,7 +366,7 @@ public class Analyze extends AppCompatActivity {
 
         tts = new TextToSpeech(getApplicationContext(), i -> {
             if (i == TextToSpeech.SUCCESS) {
-                int lang = tts.setLanguage(Locale.getDefault()); // Get the phone's locale
+                int lang = tts.setLanguage(Locale.ENGLISH); // Get the phone's locale
                 // Check if the language is supported
                 if (lang == TextToSpeech.LANG_MISSING_DATA) {
                     Toast.makeText(getApplicationContext(), "Language isn't supported by TTS", Toast.LENGTH_LONG).show();

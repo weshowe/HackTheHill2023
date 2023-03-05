@@ -3,7 +3,6 @@ package com.example.huehunter;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
-import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -11,5 +10,6 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+
     }
 }

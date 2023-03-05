@@ -947,4 +947,13 @@ public class MainActivity extends AppCompatActivity {
         colours.put("Zaffre", new int[]{0, 20, 168});
         colours.put("Zinnwaldite Brown", new int[]{44, 22, 8});
     }
+
+    public void goColorTest(View view){
+        Intent intent = new Intent(this,TestActivity.class);
+        startActivity(intent);
+    }
+    public void goSettings(View view){
+        Intent intent = new Intent(this,SettingsActivity.class);
+        startActivity(intent);
+    }
 }
