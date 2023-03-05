@@ -373,6 +373,8 @@ public class Analyze extends AppCompatActivity {
                     tts.setLanguage(Locale.US); // Set to en_US as a fallback
                 }
 
+                tts.setSpeechRate(0.75f);
+
             } else {
                 Toast.makeText(getApplicationContext(), "TTS initialization failed!", Toast.LENGTH_SHORT).show();
             }
