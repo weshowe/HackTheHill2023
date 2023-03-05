@@ -125,8 +125,35 @@ public class Analyze extends AppCompatActivity {
                         final int[] viewPosition = new int[2];
                         v.getLocationOnScreen(viewPosition);
                         magnifier.show(event.getRawX() - viewPosition[0], event.getRawY() - viewPosition[1]);
+
                         circle.setX((int)event.getX()+75);
                         circle.setY((int)event.getY()+115);
+
+
+                        // Get location of the small circle
+                        float X = circle.getX();
+                        float Y = circle.getY();
+
+                        int orig_height = bitmap.getHeight();
+                        int orig_width = bitmap.getWidth();
+
+                        int height_offset = magnifier.getSourceHeight();
+                        int width_offset = magnifier.getSourceWidth();
+                        Point pos = magnifier.getSourcePosition();
+
+                        //int[] zoom_pixels = new int[height_offset * width_offset];
+                        int[] zoom_pixels = new int[1];
+
+                        System.out.println(orig_height + " " + orig_width + " " + height_offset + " " + width_offset + " " + pos.y + " " + pos.x);
+
+                        try {
+                            bitmap.getPixels(zoom_pixels, 0, 1, (int)X, (int)Y, 1, 1);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid Position");
+                            break;
+                        }
+
+
 
                         bitmap = view.getDrawingCache();
                         int pixel = bitmap.getPixel((int)event.getX(),(int)event.getY());
