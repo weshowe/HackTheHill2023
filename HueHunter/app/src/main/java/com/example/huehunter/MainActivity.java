@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.CAMERA
             },100);
         }
-        
+
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
